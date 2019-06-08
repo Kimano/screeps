@@ -1,10 +1,11 @@
 var roleHarvester = {
   requirements: {
-    MOVE: .2,
-    CARRY: .40,
-    WORK: .40
+    MOVE: .3,
+    CARRY: .20,
+    WORK: .50
   },
-  bodyPriority: [MOVE, CARRY],
+  bodyPriority: [MOVE, WORK],
+  name: 'harvester',
   run: (creep) => {
     if (creep.carry.energy === creep.carryCapacity) {
       creep.memory.harvesting = false
@@ -14,7 +15,9 @@ var roleHarvester = {
     if (creep.memory.harvesting && creep.carry.energy < creep.carryCapacity) {
       let sourceid = creep.memory.source
       if (sourceid === undefined) {
-        let closest = creep.pos.findClosestByPath(FIND_SOURCES)
+        let closest = creep.pos.findClosestByPath(FIND_SOURCES, {
+          filter: (s) => s.energy > 0
+        })
         if (closest === null) {
           closest = creep.room.find(FIND_SOURCES)[0]
         }

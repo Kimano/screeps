@@ -7,6 +7,7 @@ var roleUpgrader = {
     WORK: .40
   },
   bodyPriority: [MOVE, WORK],
+  name: 'upgrader',
   run: (creep) => {
     if ('recovering' in creep) {
       const tomb = creep.memory.recovering

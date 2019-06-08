@@ -2,6 +2,7 @@ const roleHarvester = require('role.harvester')
 const roleBuilder = require('role.builder')
 const roleUpgrader = require('role.upgrader')
 const roleRepairer = require('role.repairer')
+const roleHauler = require('role.hauler')
 
 const workerController = {
   clean: () => {
@@ -21,9 +22,9 @@ const workerController = {
   count: (role) => _.sum(Game.creeps, (creep) => creep.memory.role == role),
   generateName: (role) => `${role}-${Game.time}`,
   spawn: (spawn, role, capacity) => {
-    const newName = workerController.generateName(role)
-    const body = workerController.buildBody(roleHarvester.requirements, roleHarvester.bodyPriority, capacity)
-    return spawn.createCreep(body, newName, { role: role })
+    const newName = workerController.generateName(role.name)
+    const body = workerController.buildBody(role.requirements, role.bodyPriority, capacity)
+    return spawn.createCreep(body, newName, { role: role.name })
   },
   recover: (creep, tomb) => {
     console.log(creep.name, 'is recovering', tomb.id)
@@ -42,20 +43,27 @@ const workerController = {
     const energyCapacity = room.energyCapacityAvailable
     // Spawn logic
     if (workerController.count('harvester') < 5) {
-      workerController.spawn(spawn, 'harvester', energyCapacity)
+      workerController.spawn(spawn, roleHarvester, energyCapacity)
     } else if (workerController.count('upgrader') < 2) {
-      workerController.spawn(spawn, 'upgrader', energyCapacity)
+      workerController.spawn(spawn, roleUpgrader, energyCapacity)
     } else if (workerController.count('builder') < 3) {
-      workerController.spawn(spawn, 'builder', energyCapacity)
+      workerController.spawn(spawn, roleBuilder, energyCapacity)
     } else if (workerController.count('repairer') < 1) {
-      workerController.spawn(spawn, 'repairer', energyCapacity)
+      workerController.spawn(spawn, roleRepairer, energyCapacity)
+    } else if (workerController.count('hauler') < 1) {
+      workerController.spawn(spawn, roleHauler, energyCapacity)
     }
     // Worker logic
     const tombstones = room.find(FIND_TOMBSTONES)
     tombstones.forEach((t) => {
       const energy = t.store[RESOURCE_ENERGY]
       if (energy > 25) {
-        const creep = t.pos.findClosestByPath(FIND_MY_CREEPS)
+        const creep = t.pos.findClosestByPath(FIND_MY_CREEPS, {
+          filter: (c) => {
+            const freeSpace = c.carryCapacity - c.carry.energy
+            return freeSpace > energy
+          }
+        })
         if (creep !== null) {
           creep.memory.recovering = t.id
           workerController.recover(creep, t)
@@ -64,19 +72,21 @@ const workerController = {
     })
     for (const name in Game.creeps) {
       const creep = Game.creeps[name];
-      if ('recovering' in creep) {
+      if (creep.memory.recovering) {
         console.log(name, 'is recovering, skipping')
         // Already got a task so skipping
         continue
       }
       if (creep.memory.role == 'harvester') {
-        roleHarvester.run(creep);
+        roleHarvester.run(creep)
       } else if (creep.memory.role == 'upgrader') {
-        roleUpgrader.run(creep);
+        roleUpgrader.run(creep)
       } else if (creep.memory.role == 'repairer') {
-        roleRepairer.run(creep);
+        roleRepairer.run(creep)
       } else if (creep.memory.role == 'builder') {
-        roleBuilder.run(creep);
+        roleBuilder.run(creep)
+      } else if (creep.memory.role == 'hauler') {
+        roleHauler.run(creep)
       }
     }
   },

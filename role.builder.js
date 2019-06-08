@@ -8,6 +8,7 @@ var roleBuilder = {
     WORK: .5
   },
   bodyPriority: [MOVE, WORK],
+  name: 'builder',
   run: (creep) => {
     if ('recovering' in creep) {
       const tomb = creep.memory.recovering
