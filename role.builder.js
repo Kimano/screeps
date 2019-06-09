@@ -1,5 +1,7 @@
-const roleUpgrader = require('role.upgrader')
 const roleHarvester = require('role.harvester')
+const CONSTANTS = require('screepsConstants')
+const constructionManager = require('constructionManager')
+const energyGatherBehavior = require('energyGatherBehavior')
 
 var roleBuilder = {
   requirements: {
@@ -10,40 +12,36 @@ var roleBuilder = {
   bodyPriority: [MOVE, WORK],
   name: 'builder',
   run: (creep) => {
-    if ('recovering' in creep) {
-      const tomb = creep.memory.recovering
-      const resp = creep.withdraw(tomb, RESOURCE_ENERGY)
-      if (resp === OK) {
-        delete creep.memory.recovering
-      } else if (resp === ERR_NOT_IN_RANGE) {
-        creep.moveTo(tomb)
-      }
-    }
-    if (creep.memory.building && creep.carry.energy == 0) {
-      creep.memory.building = false;
-    }
-    if (!creep.memory.building && creep.carry.energy == creep.carryCapacity) {
-      creep.memory.building = true;
-    }
-    if (creep.memory.building) {
-      const target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
-      // let structures = creep.room.find(FIND_STRUCTURES)
-      if (target !== null) {
-        if (creep.build(target) == ERR_NOT_IN_RANGE) {
-          creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } })
-        }
-      } else {
-        roleUpgrader.run(creep)
-      }
+    if (creep.memory.gathering || creep.carry.energy === 0) {
+      energyGatherBehavior.run(creep);
     } else {
-      const container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-        filter: (s) => (s.structureType === STRUCTURE_CONTAINER || s.structureType === STRUCTURE_STORAGE) && s.store[RESOURCE_ENERGY] > 0
-      })
-      if (container === null) {
-        roleHarvester.run(creep)
-      } else {
-        if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-          creep.moveTo(container)
+      var action = false;
+      if (!action) {
+        const structure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+          filter: (s) => {
+            return s.hits < s.hitsMax / 2 && s.structureType !== STRUCTURE_WALL
+          }
+        })
+        if (structure !== null) {
+          action = true;
+          if (creep.repair(structure) === ERR_NOT_IN_RANGE) {
+            creep.moveTo(structure)
+          }
+        }
+      }
+      if (!action) {
+        var target = constructionManager.getConstructionSite(creep.room);
+        if (target !== null) {
+          action = true;
+          if (creep.build(target) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(target, { visualizePathStyle: { stroke: CONSTANTS.colors.building } })
+          }
+        }
+      }
+      if (!action) {
+        action = true;
+        if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+          creep.moveTo(creep.room.controller, { visualizePathStyle: { stroke: CONSTANTS.colors.upgrading } });
         }
       }
     }
