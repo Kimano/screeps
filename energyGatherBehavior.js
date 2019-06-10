@@ -7,25 +7,20 @@ const energyGatherBehavior = {
         }
 
         if (creep.memory.gathering) {
-            var energySource = gatherManager.getTombstoneToHarvest(creep);
-
-            const container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: (s) => (s.structureType === STRUCTURE_CONTAINER || s.structureType === STRUCTURE_STORAGE) && s.store[RESOURCE_ENERGY] > 0
-            })
-            if (container && !energySource) energySource = container;
-
-            var retCode = creep.withdraw(energySource, RESOURCE_ENERGY);
-            switch (retCode) {
-                case ERR_NOT_IN_RANGE:
-                    creep.moveTo(energySource);
-                    break;
-                case ERR_FULL:
-                    creep.memory.gathering = false
-                    break;
-            }
-            if (!energySource) {
+            const tomb = gatherManager.getTombstoneToHarvest(creep);
+            if(tomb) {
+                var retCode = creep.withdraw(tomb, RESOURCE_ENERGY);
+                switch (retCode) {
+                    case ERR_NOT_IN_RANGE:
+                        creep.moveTo(energySource);
+                        break;
+                    case ERR_FULL:
+                        creep.memory.gathering = false
+                        break;
+                }
+            } else {
                 let sourceid = creep.memory.source
-                const source = Game.getObjectById(sourceid)
+                const source = Game.getObjectById(sourceid);
 
                 if (!source) {
                     var sources = creep.room.find(FIND_SOURCES);
@@ -48,7 +43,6 @@ const energyGatherBehavior = {
                 }
             }
         }
-
     }
 }
 

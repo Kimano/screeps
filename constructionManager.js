@@ -57,12 +57,12 @@ const constructionManager = {
         _.forEach(sources, function (source) {
             constructionManager.drawCircle(room, source.pos, 1, STRUCTURE_ROAD, { buildOnWall: false });
             constructionManager.drawCircle(room, source.pos, 2, STRUCTURE_ROAD, { buildOnWall: false });
+            constructionManager.buildDiagonals(room, source.pos, STRUCTURE_CONTAINER, { buildOnWall: false, count:1 })
             _.forEach(room.findPath(source.pos, spawn.pos, { ignoreCreeps: true, ignoreRoads: false }), (posObj) => {
                 room.createConstructionSite(posObj.x, posObj.y, STRUCTURE_ROAD);
             });
         });
 
-        // console.log(room)
         constructionManager.drawCircle(room, spawn.pos, 1, STRUCTURE_ROAD);
         constructionManager.drawCircle(room, spawn.pos, 2, STRUCTURE_ROAD);
         constructionManager.drawCircle(room, spawn.pos, 3, STRUCTURE_EXTENSION, { count: CONSTANTS.extenstions_per_RCL[room.controller.level] })
@@ -80,7 +80,6 @@ const constructionManager = {
         var x = 0;
         var y = radius;
         do {
-            Memory.pos = pos;
             var pos;
             pos = new RoomPosition(position.x + x, position.y + y, position.roomName);
             if ((buildOnWall || !self.isWall(room, pos)) && (ignoreStructures || !self.isStructure(room, pos)) && --count >= 0) room.createConstructionSite(pos, structureType);
@@ -107,6 +106,23 @@ const constructionManager = {
             }
             x++;
         } while (x <= y);
+    },
+
+    buildDiagonals: (room, position, structureType, opts) => {
+        var self = constructionManager;
+        var buildOnWall = (opts && opts.buildOnWall) || false;
+        var count = (opts && opts.count) ? opts.count : Number.MAX_SAFE_INTEGER;
+        var ignoreStructures = (opts && opts.ignoreStructures) || false;
+
+        var pos;
+        pos = new RoomPosition(position.x + 1, position.y + 1, position.roomName);
+        if ((buildOnWall || !self.isWall(room, pos)) && (ignoreStructures || !self.isStructure(room, pos)) && --count >= 0) room.createConstructionSite(pos, structureType);
+        pos = new RoomPosition(position.x + 1, position.y - 1, position.roomName);
+        if ((buildOnWall || !self.isWall(room, pos)) && (ignoreStructures || !self.isStructure(room, pos)) && --count >= 0) room.createConstructionSite(pos, structureType);
+        pos = new RoomPosition(position.x - 1, position.y + 1, position.roomName);
+        if ((buildOnWall || !self.isWall(room, pos)) && (ignoreStructures || !self.isStructure(room, pos)) && --count >= 0) room.createConstructionSite(pos, structureType);
+        pos = new RoomPosition(position.x - 1, position.y - 1, position.roomName);
+        if ((buildOnWall || !self.isWall(room, pos)) && (ignoreStructures || !self.isStructure(room, pos)) && --count >= 0) room.createConstructionSite(pos, structureType);
     },
 
     isWall: (room, pos) => {

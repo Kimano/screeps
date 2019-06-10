@@ -7,10 +7,10 @@ const screepsConstants = {
         STRUCTURE_SPAWN: 1,
         STRUCTURE_EXTENSION: 2,
         STRUCTURE_LINK: 3,
-        STRUCTURE_ROAD: 4,
-        STRUCTURE_CONTAINER: 5,
+        STRUCTURE_CONTAINER: 4,
+        STRUCTURE_STORAGE: 5,
         STRUCTURE_EXTRACTOR: 6,
-        STRUCTURE_STORAGE: 7,
+        STRUCTURE_ROAD: 7,
         STRUCTURE_CONTROLLER: 8,
         STRUCTURE_WALL: 9,
         STRUCTURE_TOWER: 10,
@@ -22,7 +22,7 @@ const screepsConstants = {
         STRUCTURE_RAMPART: 16
     },
 
-    extenstions_per_RCL: {
+    extensions_per_RCL: {
         1: 0,
         2: 5,
         3: 10,

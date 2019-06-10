@@ -1,5 +1,3 @@
-const roleHarvester = require('role.harvester');
-const roleBuilder = require('role.builder');
 const roleTower = require('role.tower')
 const workerController = require('workerController')
 
