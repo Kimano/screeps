@@ -14,10 +14,10 @@ const roleHauler = {
         } else {
             // Find the storage destination
             var extension = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-                filter: (s) => s.structureType === STRUCTURE_EXTENSION && s.energy < s.energyCapacity
+                filter: (s) => s.structureType == STRUCTURE_EXTENSION && s.energy < s.energyCapacity
             });
             var storage = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-                filter: (s) => s.structureType === STRUCTURE_STORAGE && s.store[RESOURCE_ENERGY] < s.storeCapacity
+                filter: (s) => s.structureType == STRUCTURE_STORAGE && s.store[RESOURCE_ENERGY] < s.storeCapacity
             });
             var spawn = creep.pos.findClosestByPath(FIND_MY_SPAWNS, {
                 filter: (s) => s.energy < s.energyCapacity

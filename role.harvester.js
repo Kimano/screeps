@@ -2,7 +2,7 @@ const energyGatherBehavior = require('energyGatherBehavior')
 
 var roleHarvester = {
     body: {
-        baseBodyParts: [CARRY, CARRY, WORK, MOVE],
+        baseBodyParts: [CARRY, WORK, WORK, MOVE],
         additionalBodyParts: [WORK]
     },
     name: 'harvester',
@@ -11,7 +11,7 @@ var roleHarvester = {
             energyGatherBehavior.run(creep);
         } else {
             const container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: (structure) => structure.structureType === STRUCTURE_CONTAINER
+                filter: (structure) => structure.structureType == STRUCTURE_CONTAINER
             });
             if (container) {
                 if (creep.transfer(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {

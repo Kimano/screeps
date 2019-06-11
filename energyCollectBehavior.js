@@ -1,5 +1,6 @@
 const gatherManager = require('gatherManager');
 const energyGatherBehavior = require('energyGatherBehavior');
+const CONSTANTS = require('screepsConstants');
 
 const energyCollectBehavior = {
     run: (creep) => {
@@ -10,17 +11,17 @@ const energyCollectBehavior = {
         if (creep.memory.gathering) {
             const tomb = gatherManager.getTombstoneToHarvest(creep);
             const storage = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: (s) => (s.structureType === STRUCTURE_STORAGE) && s.store[RESOURCE_ENERGY] > 0
+                filter: (s) => (s.structureType == STRUCTURE_STORAGE) && s.store[RESOURCE_ENERGY] > 0
             })
             const container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: (s) => s.structureType === STRUCTURE_CONTAINER
+                filter: (s) => (s.structureType == STRUCTURE_CONTAINER) && s.store[RESOURCE_ENERGY] > 0
             })
             const energySource = tomb||container||storage;
             if(energySource) {
                 var retCode = creep.withdraw(energySource, RESOURCE_ENERGY);
                 switch (retCode) {
                     case ERR_NOT_IN_RANGE:
-                        creep.moveTo(energySource);
+                        creep.moveTo(energySource,{ visualizePathStyle: { stroke: CONSTANTS.colors.upgrading, opacity: .5} });
                         break;
                     case ERR_FULL:
                         creep.memory.gathering = false

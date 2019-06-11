@@ -4,7 +4,7 @@ const energyCollectBehavior = require('energyCollectBehavior')
 
 var roleBuilder = {
     body: {
-        baseBodyParts: [CARRY, CARRY, WORK, MOVE],
+        baseBodyParts: [CARRY, WORK, MOVE],
         additionalBodyParts: [WORK,CARRY,MOVE]
     },
     name: 'builder',

@@ -12,7 +12,7 @@ const energyGatherBehavior = {
                 var retCode = creep.withdraw(tomb, RESOURCE_ENERGY);
                 switch (retCode) {
                     case ERR_NOT_IN_RANGE:
-                        creep.moveTo(energySource);
+                        creep.moveTo(tomb);
                         break;
                     case ERR_FULL:
                         creep.memory.gathering = false

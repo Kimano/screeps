@@ -2,9 +2,9 @@ const gatherManager = {
 
     checkTombstones: (room) => {
         if (!Memory.tombstones) Memory.tombstones = {};
-        // if (room.find(FIND_TOMBSTONES).length == 0) Memory.tombstones = {};
+        if (room.find(FIND_TOMBSTONES).length == 0) Memory.tombstones = {};
         const tombstones = room.find(FIND_TOMBSTONES, {
-            filter: (tomb) => { tomb[RESOURCE_ENERGY] > 25 }
+            filter: (tomb) => tomb.store[RESOURCE_ENERGY] > 25
         })
         return tombstones;
     },

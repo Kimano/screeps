@@ -34,11 +34,12 @@ const screepsConstants = {
     },
 
     colors: {
-        building: "#00BFFF",
+        building: "#FF00FF",
         moving: "#FFFFFF",
-        repairing: "#FF0000",
-        upgrading: "#006400",
-        hauling: "#FFFF00"
+        repairing: "#FF6600",
+        upgrading: "#00FFFF",
+        hauling: "#00FF00",
+        collecting: "#FFFF00"
     }
 }
 
