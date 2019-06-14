@@ -1,5 +1,4 @@
 const CONSTANTS = require('screepsConstants')
-const energyGatherBehavior = require('energyGatherBehavior')
 const energyCollectBehavior = require('energyCollectBehavior')
 
 const roleHauler = {
@@ -22,7 +21,10 @@ const roleHauler = {
             var spawn = creep.pos.findClosestByPath(FIND_MY_SPAWNS, {
                 filter: (s) => s.energy < s.energyCapacity
             });
-            var target = spawn || extension || storage;
+            var tower = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: (s) => s.structureType == STRUCTURE_TOWER && s.energy < s.energyCapacity
+            });
+            var target = spawn || extension || storage || tower;
             if(target) {
                 if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, { visualizePath: { stroke: CONSTANTS.colors.hauling } });

@@ -19,7 +19,10 @@ var roleDrone = {
             const extension = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (s) => s.structureType == STRUCTURE_EXTENSION && s.energy < s.energyCapacity
             });
-            var target = spawner || extension;
+            const tower = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: (s) => s.structureType == STRUCTURE_TOWER && s.energy < s.energyCapacity
+            });
+            var target = spawner || extension || tower;
             if (creep.room.controller.ticksToDowngrade < 3000) {
                 if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(creep.room.controller, { visualizePathStyle: { stroke: CONSTANTS.colors.upgrading } });

@@ -2,6 +2,7 @@ const roleHarvester = require('role.harvester')
 const roleBuilder = require('role.builder')
 const roleHauler = require('role.hauler')
 const roleDrone = require('role.drone')
+const roleTower = require('role.tower');
 const constructionManager = require('constructionManager')
 
 const workerController = {
@@ -46,6 +47,7 @@ const workerController = {
                 roleHarvester.run(creep)
             }
         }
+        _.each(room.find(FIND_MY_STRUCTURES, (s) => s.structureType === STRUCTURE_TOWER), (tower) => roleTower.run(tower));
     },
     spawn: (spawn, role, capacity, opts) => {
         const newName = workerController.generateName(role.name)

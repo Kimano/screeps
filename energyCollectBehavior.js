@@ -9,13 +9,19 @@ const energyCollectBehavior = {
         }
 
         if (creep.memory.gathering) {
-            const tomb = gatherManager.getTombstoneToHarvest(creep);
+            // const tomb = gatherManager.getTombstoneToHarvest(creep);
+            const tomb = creep.pos.findClosestByPath(FIND_TOMBSTONES, {
+                filter: (s) => (s.structureType == STRUCTURE_STORAGE) && s.store[RESOURCE_ENERGY] > 0
+            })
             const storage = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (s) => (s.structureType == STRUCTURE_STORAGE) && s.store[RESOURCE_ENERGY] > 0
             })
             const container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (s) => (s.structureType == STRUCTURE_CONTAINER) && s.store[RESOURCE_ENERGY] > 0
             })
+            const dropped = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES,{
+                filter: (s) => (s.resourceType === RESOURCE_ENERGY)
+            });
             const energySource = tomb||container||storage;
             if(energySource) {
                 var retCode = creep.withdraw(energySource, RESOURCE_ENERGY);

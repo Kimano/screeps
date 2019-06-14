@@ -64,9 +64,17 @@ const constructionManager = {
                     }
                 }
             ])
-            return _.find(sites, function (site) {
+            var swampRoads = _.find(sites, function (site) {
                 return site.structureType === STRUCTURE_ROAD && _.find(site.room.lookAt(site.pos), { type: "terrain", terrain: "swamp" })
-            }) || sortedSites[0]
+            });
+            var filteredSites = _.filter(sortedSites, (s) => s.structureType !== STRUCTURE_ROAD);
+            var skipRoads = true;
+            if(skipRoads) {
+                return _.first(swampRoads) || _.first(filteredSites);
+            } else {
+                return _.first(swampRoads) || _.first(sortedSites);
+            }
+            
         }
     },
 
