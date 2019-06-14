@@ -41,10 +41,6 @@ class Unit {
         }
         return ERR_NOT_FOUND;
     }
-
-    generateName(role) { 
-        this.name = `${role}-${Game.time}`
-    }
 };
 
 module.exports = Unit;

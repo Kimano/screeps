@@ -1,4 +1,5 @@
 const CONSTANTS = require('screepsConstants')
+const UnitSetup = require('UnitSetup')
 
 class Gateway {
     spawns = [];
@@ -11,13 +12,15 @@ class Gateway {
         this.spawnQueue = [];
     }
     preRun() {
-
+        
     }
 
     run() {
         while(this.availableSpawns.length > 0) {
-            var result = this.spawnCreep();
+            var creep = this.availableSpawns.shift();
+            var result = this.spawnCreep(creep);
             if(result !== OK) {
+                this.availableSpawns.unshift(creep);
                 break;
             }
         }
@@ -27,7 +30,7 @@ class Gateway {
         var spawner = this.getSpawn();
         if(spawner) {
             var creepToSpawn = this.getNextInQueue();
-            spawner.spawnCreep(creepToSpawn.body, "")
+            var code = spawner.spawnCreep(creepToSpawn.bodySetup, creepToSpawn.name, this.getEnergyCapacity());
         }
         return -1;
     }
@@ -36,37 +39,16 @@ class Gateway {
         return this.spawnQueue.shift();
     }
 
-    queueUnit(bodyType, opts) {
-        var bodyCalced = this.calculateBody(bodyType);
-        this.spawnQueue.push({
-            body: bodyCalced,
-            bodyType: bodyType,
-            opts: opts
-        });
+    queueUnit(role) {
+        this.spawnQueue.push(new UnitSetup(role));
     }
 
     getSpawn(spawn) {
         return this.availableSpawns.shift();
     }
 
-    calculateBody(bodyProps) {
-        var capacity = this.nexus.room.energyCapacityAvailable;
-        let baseBodyParts = bodyProps.baseBodyParts;
-        let additionalBodyParts = bodyProps.additionalBodyParts;
-        let body = baseBodyParts;
-        var baseBodyPartsCost = _.reduce(baseBodyParts, (result, value) => {
-            return result += BODYPART_COST[value];
-        }, 0);
-        var additionalBodyPartsCost = _.reduce(additionalBodyParts, (result, value) => {
-            return result += BODYPART_COST[value];
-        }, 0);
-        let totalCost = baseBodyPartsCost;
-        while (totalCost + additionalBodyPartsCost < capacity) {
-            body = body.concat(additionalBodyParts);
-            totalCost += additionalBodyPartsCost;
-        }
-
-        return body
+    getEnergyCapacity() {
+        return this.room.energyCapacityAvailable;
     }
 };
 

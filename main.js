@@ -3,7 +3,7 @@ const workerController = require('workerController')
 var Conclave = require('Conclave')
 
 module.exports.loop = function () {
-    var oldCode = false;
+    var oldCode = true;
     if(oldCode) {
         const room = Object.keys(Game.rooms)[0]
 
