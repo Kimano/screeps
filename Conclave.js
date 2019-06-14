@@ -29,4 +29,4 @@ class Conclave {
     }
 };
 
-module.exports = Executor1;
+module.exports = Conclave;
