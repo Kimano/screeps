@@ -1,4 +1,7 @@
 const CONSTANTS = require('screepsConstants')
+const Executor = require('Executor');
+const Assimilator = require('Assimilator');
+const Gateway = require('Gateway');
 
 class Nexus {
     id = undefined;
@@ -10,7 +13,7 @@ class Nexus {
     extensions = [];
     sources = [];
     constructionSites = [];
-    miningSites = {};
+    miningSites = [];
     executor = {};
     storage = undefined;
 
@@ -23,11 +26,12 @@ class Nexus {
     }
 
     init(id, roomName) {
-        console.log("init");
+        // console.log("init");
+        // console.log(roomName)
         this.id = id;
         this.name = roomName;
         this.room = Game.rooms[roomName];
-        this.outposts = _.compact(_.map(outposts, outpost => Game.rooms[outpost]));
+        // this.outposts = _.compact(_.map(outposts, outpost => Game.rooms[outpost]));
         this.rooms = [this.room].concat(this.outposts);
         this.creeps = _.find(FIND_MY_CREEPS);
         this.creepsByRole = _.groupBy(this.creeps, creep => creep.memory.role);
@@ -35,10 +39,16 @@ class Nexus {
         this.createRoomObjects();
     }
     preRun() {
-        
+        this.requests = {};
+        var spawns = this.room.find(FIND_MY_SPAWNS);
+        // console.log("Nexus preRun");
+
+        this.executor.preRun();
     }
     run() {
-        console.log("run");
+        // console.log("Nexus run");
+
+        this.executor.run();
     }
 
     createRoomObjects() {
@@ -49,10 +59,23 @@ class Nexus {
             filter: (s) => s.structureType === STRUCTURE_STORAGE
         });
         if(storage) this.storage = storage;
+        var extensions = this.room.find(FIND_STRUCTURES, {
+            filter: (s) => s.structureType === STRUCTURE_EXTENSION
+        });
+        if(extensions) this.extensions = extensions;
+        this.gateway = new Gateway(this);
     }
 
     handleSource(source) {
-        this.miningSites.push(new Assimilator(this, source));
+        this.miningSites = this.miningSites.concat(new Assimilator(this, source));
+    }
+
+    get Executor() {
+        return this.executor;
+    }
+
+    get capacity() {
+
     }
 };
 

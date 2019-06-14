@@ -1,4 +1,5 @@
 const CONSTANTS = require('screepsConstants')
+const ResourceCollectionPurpose = require('ResourceCollectionPurpose')
 
 class Executor {
     purposes = [];
@@ -8,19 +9,22 @@ class Executor {
     constructor(nexus) {
         this.init();
         this.nexus = nexus;
+        this.purposes[0] = new ResourceCollectionPurpose();
     }
 
     init() {
         this.init = true;
-        _.each(purposes, (purpose) => purpose.init());
+        _.each(this.purposes, (purpose) => purpose.init());
     }
     
     preRun() {
-        _.each(purposes, (purpose) => purpose.preRun());
+        _.each(this.purposes, (purpose) => purpose.preRun());
+        console.log("Executor preRun")
     }
 
     run() {
-        _.each(purposes, (purpose) => purpose.run());
+        _.each(this.purposes, (purpose) => purpose.run());
+        console.log("Executor run")
     }
 };
 

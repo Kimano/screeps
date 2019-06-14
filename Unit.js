@@ -2,9 +2,9 @@ const CONSTANTS = require('screepsConstants')
 
 class Unit {
     
-    init() {
+    init(creep) {
         this.init = true;
-        
+        this.creep = creep;
     }
     preRun() {
 
@@ -40,6 +40,10 @@ class Unit {
             return this.creep.moveTo(this.task.pos);
         }
         return ERR_NOT_FOUND;
+    }
+
+    generateName(role) { 
+        this.name = `${role}-${Game.time}`
     }
 };
 

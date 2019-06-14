@@ -1,9 +1,9 @@
 const roleTower = require('role.tower')
 const workerController = require('workerController')
-const Conclave = require('Conclave')
+var Conclave = require('Conclave')
 
 module.exports.loop = function () {
-    var oldCode = true;
+    var oldCode = false;
     if(oldCode) {
         const room = Object.keys(Game.rooms)[0]
 
@@ -28,11 +28,13 @@ module.exports.loop = function () {
             { align: 'left', opacity: 0.8 });
         }
     } else {
-        if(!Conclave || !Conclave.init) {
-            delete global.Conclave;
-            global.Conclave = new Conclave();
+        // if(!Conclave || !Conclave.init) {
+        //     delete global.Conclave;
+        //     global.Conclave = new Conclave();
             Conclave.init();
-        }
+        // }
+        Conclave.preRun();
+        Conclave.run();
     }
 
 }

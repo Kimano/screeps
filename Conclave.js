@@ -3,28 +3,39 @@ const Nexus = require('Nexus')
 const Executor = require('Executor')
 
 class Conclave {
-    init = false;
+    inited = false;
     missions = {};
     nexi = {};
     executors = {};
     units = {};
-    init() {
-        this.init = true;
+    constructor() {
+
+    }
+
+    static init() {
+        this.inited = true;
         this.nexi = {};
+        this.executors = {};
         _.each(Game.rooms, (room) => {
             // console.log(this.nexi);
-            var roomName = room.roomName;
+            // console.log(room)
+            var roomName = room.name;
             var nexus = new Nexus(this.nexi.length, roomName);
             this.nexi[roomName] = nexus;
-            this.executors[roomName] = nexus.getExecutor();
+            this.executors[roomName] = nexus.Executor;
         });
     }
 
-    preRun() {
-        _.each(this.nexi, (nexus) => nexus.preRun());
+    static preRun() {
+        // console.log("Conclave preRun");
+        _.each(this.nexi, function(nexus){
+            console.log("Nexus loop run")
+            nexus.preRun()
+        });
     }
 
-    run() {
+    static run() {
+        // console.log("Conclave run");
         _.each(this.nexi, (nexus) => nexus.run());
     }
 };

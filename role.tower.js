@@ -13,7 +13,8 @@ const roleTower = {
                 filter: (s) => s.hitsMax > s.hits
             })
             if (structure) {
-                if(tower.hasProperty(repair)) {
+                // console.log(tower);
+                if(tower.repair) {
                     tower.repair(structure);
                 }
             }

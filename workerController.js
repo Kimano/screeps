@@ -25,14 +25,14 @@ const workerController = {
         const roomControllerLevel = room.controller.level;
         constructionManager.calculateNextBuilding(room);
         // Spawn logic
-        if ((roomControllerLevel <= 2) && workerController.count('drone') < 8 || workerController.count('drone') < 4 ) {
+        if ( workerController.count('drone') < 4 ) {
             workerController.spawn(spawn, roleDrone, 200);
-        }else if (roomControllerLevel > 1 && workerController.count('harvester') < room.find(FIND_SOURCES).length) {
-            workerController.spawnHarvester(spawn, roleHarvester, energyCapacity, room);
+        } else if (roomControllerLevel > 1 && workerController.count('harvester') < room.find(FIND_SOURCES).length) {
+            // workerController.spawnHarvester(spawn, roleHarvester, energyCapacity, room);
         } else if (roomControllerLevel > 2 && workerController.count('hauler') < 2) {
-            workerController.spawn(spawn, roleHauler, energyCapacity);
+            // workerController.spawn(spawn, roleHauler, energyCapacity);
         } else if ((roomControllerLevel > 1) && workerController.count('builder') < 1 || workerController.count('builder') < 2 ) {
-            workerController.spawn(spawn, roleBuilder, energyCapacity);
+            // workerController.spawn(spawn, roleBuilder, energyCapacity);
         }
         // Worker logic
         for (const name in Game.creeps) {
