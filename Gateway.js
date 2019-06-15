@@ -1,16 +1,18 @@
 const CONSTANTS = require('screepsConstants')
 const UnitSetup = require('UnitSetup')
+const SpawnPurpose = require('SpawnPurpose')
 
 class Gateway {
     spawns = [];
-
-    init(nexus) {
-        this.init = true;
+    constructor(nexus) {
         this.nexus = nexus;
         this.spawns = this.nexus.room.find(FIND_MY_SPAWNS);
         this.availableSpawns = [].concat(this.spawns);
         this.spawnQueue = [];
+        this.purpose = new SpawnPurpose(this);
+        this.nexus.Executor.registerPurpose(this.purpose);
     }
+
     preRun() {
         
     }
@@ -49,6 +51,10 @@ class Gateway {
 
     getEnergyCapacity() {
         return this.room.energyCapacityAvailable;
+    }
+
+    getQueuedUnitsByRole(role) {
+        return _.filter(this.spawnQueue, (setup) => setup.getRole() === role);
     }
 };
 

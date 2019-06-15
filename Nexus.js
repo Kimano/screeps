@@ -1,4 +1,5 @@
 const CONSTANTS = require('screepsConstants')
+const Roles = require('Roles')
 const Executor = require('Executor');
 const Assimilator = require('Assimilator');
 const Gateway = require('Gateway');
@@ -22,31 +23,25 @@ class Nexus {
         this.roomName = roomName;
         this.outposts = outposts;
         this.executor = new Executor(this);
-        this.init(id, roomName, outposts);
-    }
-
-    init(id, roomName) {
-        // console.log("init");
-        // console.log(roomName)
         this.id = id;
         this.name = roomName;
         this.room = Game.rooms[roomName];
-        // this.outposts = _.compact(_.map(outposts, outpost => Game.rooms[outpost]));
         this.rooms = [this.room].concat(this.outposts);
         this.creeps = _.find(FIND_MY_CREEPS);
-        this.creepsByRole = _.groupBy(this.creeps, creep => creep.memory.role);
+        this.creepsByRole = _.groupBy(this.creeps, creep => creep.memory.role)||{};
         this.controller = this.room.controller;
         this.createRoomObjects();
     }
+
     preRun() {
         this.requests = {};
         var spawns = this.room.find(FIND_MY_SPAWNS);
-        // console.log("Nexus preRun");
+        this.handleBootStrap();
 
         this.executor.preRun();
     }
+
     run() {
-        // console.log("Nexus run");
 
         this.executor.run();
     }
@@ -68,6 +63,16 @@ class Nexus {
 
     handleSource(source) {
         this.miningSites = this.miningSites.concat(new Assimilator(this, source));
+    }
+
+    handleBootStrap() {
+        if(this.countUnitsByRole(Roles.probe) < 4) {
+            this.gateway.queueUnit(Roles.probe);
+        }
+    }
+
+    countUnitsByRole(role) {
+        return this.gateway.getQueuedUnitsByRole(role);
     }
 
     get Executor() {

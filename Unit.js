@@ -1,11 +1,10 @@
 const CONSTANTS = require('screepsConstants')
 
 class Unit {
-    
-    init(creep) {
-        this.init = true;
+    constructor(creep) {
         this.creep = creep;
     }
+
     preRun() {
 
     }
@@ -19,7 +18,7 @@ class Unit {
 
     get task() {
         if(!this.task) {
-            this.task = this.memory.task.init();
+            this.task = this.memory.task.build();
         }
         return this.task;
     }

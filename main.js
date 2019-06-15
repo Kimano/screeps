@@ -3,7 +3,7 @@ const workerController = require('workerController')
 var Conclave = require('Conclave')
 
 module.exports.loop = function () {
-    var oldCode = true;
+    var oldCode = false;
     if(oldCode) {
         const room = Object.keys(Game.rooms)[0]
 
@@ -28,11 +28,10 @@ module.exports.loop = function () {
             { align: 'left', opacity: 0.8 });
         }
     } else {
-        // if(!Conclave || !Conclave.init) {
-        //     delete global.Conclave;
-        //     global.Conclave = new Conclave();
-            Conclave.init();
-        // }
+        if(!Conclave || !Conclave.shouldBuild) {
+            delete global.Conclave;
+            global.Conclave = new Conclave();
+        }
         Conclave.preRun();
         Conclave.run();
     }

@@ -1,11 +1,10 @@
 const CONSTANTS = require('screepsConstants')
 
 class Purpose {
-    
-    init() {
-        this.init = true;
-        
+    constructor(owner) {
+        this.owner = owner;
     }
+    
     preRun() {
 
     }
@@ -13,6 +12,8 @@ class Purpose {
     run() {
 
     }
+
+
 };
 
 module.exports = Purpose;

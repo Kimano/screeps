@@ -1,11 +1,16 @@
-const roles = require('roles')
+const Roles = require('Roles')
 
 class UnitSetup {
 
-    constructor(roleName, capacity) {
-        var setup = getByRole(roleName);
-        var bodySetup = buildBody(setup.body, capacity);
-        var name = generateName(setup.name);
+    constructor(role, capacity) {
+        // this.setup = UnitSetup.getByRole(roleName);
+        this.role = role.name;
+        this.bodySetup = UnitSetup.buildBody(role.body, capacity);
+        this.name = UnitSetup.generateName(role.name);
+    }
+
+    getRole() {
+        return this.role;
     }
 
     static generateName(role) {
@@ -13,7 +18,7 @@ class UnitSetup {
     }
 
     static getByRole(roleName) {
-        return _.flatMapDepth(roles.Setups, (setup) => { return setup.values(); })[roleName];
+        return Roles.Setups[roleName];
     }
 
     static buildBody(bodySetup, capacity) {

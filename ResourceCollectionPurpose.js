@@ -3,10 +3,6 @@ const Purpose = require('Purpose')
 
 class ResourceCollectionPurpose extends Purpose{
     
-    init() {
-        this.init = true;
-        
-    }
     preRun() {
 
     }

@@ -1,20 +1,20 @@
 const CONSTANTS = require('screepsConstants')
+const MiningPurpose = require('MiningPurpose')
 
 class Assimilator {
     source = {};
     container = {};
     link = {};
-    creep = {};
-    constructor(source) {
+    creeps = [];
+    constructor(nexus, source) {
         this.source = source;
+        var pos = this.source.pos;
+        // this.container = pos.findClosestByLimitedRange(Game.rooms[pos.roomName].containers, 1);
+        this.nexus = nexus;
+        this.purpose = new MiningPurpose(this);
+        this.nexus.Executor.registerPurpose(this.purpose);
     }
     
-    init() {
-        this.init = true;
-        var pos = this.source.pos;
-        this.container = pos.findClosestByLimitedRange(Game.rooms[pos.roomName].containers, 1);
-        // this.link = pos.findClosestByLimitedRange(, 2);
-    }
     preRun() {
         
     }

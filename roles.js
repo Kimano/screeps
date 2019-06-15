@@ -15,45 +15,39 @@ module.exports = Roles = {
 }
 
 module.exports = Setups = {
-    miners: {
-        probe: {
-            name: "Probe",
-            role: Roles.probe,
-            body: {
-                baseBodyParts: [WORK, CARRY, MOVE],
-                additionalBodyParts: []
-            }
-        },
-        void_ray: {
-            name: "Void_Ray",
-            role: Roles.void_ray,
-            body: {
-                baseBodyParts: [CARRY, WORK, WORK, MOVE],
-                additionalBodyParts: [WORK]
-            }
+
+    probe: {
+        name: "Probe",
+        role: Roles.probe,
+        body: {
+            baseBodyParts: [WORK, CARRY, MOVE],
+            additionalBodyParts: []
         }
     },
-    logistics: {
-        shuttle: {
-            name: "Shuttle",
-            role: Roles.shuttle,
-            body: {
-                baseBodyParts: [CARRY, CARRY, MOVE],
-                additionalBodyParts: [CARRY,CARRY,MOVE]
-            }
+    void_ray: {
+        name: "Void_Ray",
+        role: Roles.void_ray,
+        body: {
+            baseBodyParts: [CARRY, WORK, WORK, MOVE],
+            additionalBodyParts: [WORK]
         }
     },
-    melee: {
-        zealot: {
-            name: "Zealot"
-        },
-        archon: {
-            name: "Archon"
+    shuttle: {
+        name: "Shuttle",
+        role: Roles.shuttle,
+        body: {
+            baseBodyParts: [CARRY, CARRY, MOVE],
+            additionalBodyParts: [CARRY,CARRY,MOVE]
         }
     },
-    ranged: {
-        dragoon: {
-            name: "Dragoon"
-        }
+    zealot: {
+        name: "Zealot"
+    },
+    archon: {
+        name: "Archon"
+    },
+    dragoon: {
+        name: "Dragoon"
     }
+
 }
