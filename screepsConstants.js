@@ -34,13 +34,14 @@ const screepsConstants = {
     },
 
     colors: {
-        building: "#FF00FF",
-        moving: "#FFFFFF",
-        repairing: "#FF6600",
-        upgrading: "#00FFFF",
-        hauling: "#00FF00",
+        building:   "#FF00FF",
+        moving:     "#FFFFFF",
+        repairing:  "#FF6600",
+        upgrading:  "#00FFFF",
+        hauling:    "#00FF00",
         collecting: "#FFFF00"
     },
+    
     role: {
         zealot:     "zealot",     // Offensive oriented Melee Unit
         dragoon:    "dragoon",    // Offensive oriented Ranged Unit

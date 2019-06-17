@@ -46,6 +46,7 @@ class Unit {
 	}
 
 	goTransfer(target, resourceType, amount) {
+        // debugger;
 		if (this.pos.inRangeTo(target.pos, 1)) {
 			return this.transfer(target, resourceType, amount);
 		} else {
