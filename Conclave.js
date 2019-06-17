@@ -6,20 +6,29 @@ class Conclave {
     constructor() {
         this.nexi = {};
         this.executors = {};
-        _.each(Game.rooms, (room) => {
-            var roomName = room.name;
-            var nexus = new Nexus(this.nexi.length, roomName);
-            this.nexi[roomName] = nexus;
-            this.executors[roomName] = nexus.Executor;
-        });
+        if(Game.rooms) {
+            for (var roomName in Game.rooms) {
+                let room = Game.rooms[roomName];
+                let nexus = new Nexus(this.nexi.length, room);
+                this.nexi[roomName] = nexus;
+                this.executors[roomName] = nexus.executor;
+            }
+        }
     }
 
-    static preRun() {
-        _.each(_.values(this.executors), (executor) => executor.preRun());
+    preRun() {
+        // console.log("Conclave preRun()")
+        // debugger;
+        for(var executor in this.executors) {
+            this.executors[executor].preRun();
+        }
     }
 
-    static run() {
-        _.each(_.values(this.executors), (executor) => executor.run());
+    run() {
+        // console.log("Conclave run()")
+        for(var executor in this.executors) {
+            this.executors[executor].run();
+        }
     }
 };
 

@@ -3,14 +3,12 @@ const UnitSetup = require('UnitSetup')
 const SpawnPurpose = require('SpawnPurpose')
 
 class Gateway {
-    spawns = [];
     constructor(nexus) {
         this.nexus = nexus;
         this.spawns = this.nexus.room.find(FIND_MY_SPAWNS);
         this.availableSpawns = [].concat(this.spawns);
-        this.spawnQueue = [];
         this.purpose = new SpawnPurpose(this);
-        this.nexus.Executor.registerPurpose(this.purpose);
+        this.nexus.executor.registerPurpose(this.purpose);
     }
 
     preRun() {
@@ -18,35 +16,19 @@ class Gateway {
     }
 
     run() {
-        while(this.availableSpawns.length > 0) {
-            var creep = this.availableSpawns.shift();
-            var result = this.spawnCreep(creep);
-            if(result !== OK) {
-                this.availableSpawns.unshift(creep);
-                break;
-            }
-        }
+        // console.log("Gateway run()")
     }
 
-    spawnCreep() {
-        var spawner = this.getSpawn();
-        if(spawner) {
-            var creepToSpawn = this.getNextInQueue();
-            var code = spawner.spawnCreep(creepToSpawn.bodySetup, creepToSpawn.name, this.getEnergyCapacity());
-        }
-        return -1;
-    }
-
-    getNextInQueue() {
-        return this.spawnQueue.shift();
-    }
-
-    queueUnit(role) {
-        this.spawnQueue.push(new UnitSetup(role));
-    }
-
-    getSpawn(spawn) {
+    getSpawn() {
         return this.availableSpawns.shift();
+    }
+
+    hasAvailableSpawns() {
+        return this.availableSpawns.length > 0;
+    }
+
+    returnSpawn(spawn) {
+        this.availableSpawns.unshift(spawn);
     }
 
     getEnergyCapacity() {
@@ -54,7 +36,15 @@ class Gateway {
     }
 
     getQueuedUnitsByRole(role) {
-        return _.filter(this.spawnQueue, (setup) => setup.getRole() === role);
+        return _.filter(this.purpose.spawnQueue, (setup) => setup.getRole() === role);
+    }
+
+    getNextInQueue() {
+        return this.purpose.getNextInQueue();
+    }
+
+    queueUnitSetup(setup) {
+        this.purpose.queueUnitSetup(setup);
     }
 };
 

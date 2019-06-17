@@ -1,59 +1,55 @@
 const CONSTANTS = require('screepsConstants')
-const Roles = require('Roles')
 const Executor = require('Executor');
 const Assimilator = require('Assimilator');
 const Gateway = require('Gateway');
 
 class Nexus {
-    id = undefined;
-    creeps = {};
-    creepsByRole = {};
-    roomName = undefined;
-    controller = undefined;
-    spawns = [];
-    extensions = [];
-    sources = [];
-    constructionSites = [];
-    miningSites = [];
-    executor = {};
-    storage = undefined;
-
-    constructor(id, roomName, outposts) {
+    constructor(id, room, outposts) {
         this.id = id;
-        this.roomName = roomName;
+        this.room = room;
+        this.id = id;
+        this.roomName = room.name;
         this.outposts = outposts;
+
+        // debugger;
         this.executor = new Executor(this);
-        this.id = id;
-        this.name = roomName;
-        this.room = Game.rooms[roomName];
+
         this.rooms = [this.room].concat(this.outposts);
         this.creeps = _.find(FIND_MY_CREEPS);
         this.creepsByRole = _.groupBy(this.creeps, creep => creep.memory.role)||{};
         this.controller = this.room.controller;
+        this.assimilators = [];
         this.createRoomObjects();
     }
 
     preRun() {
+        // console.log("Nexus preRun()")
         this.requests = {};
         var spawns = this.room.find(FIND_MY_SPAWNS);
-        this.handleBootStrap();
-
-        this.executor.preRun();
+        for(var assimilator in this.assimilators) {
+            this.assimilators[assimilator].preRun();
+        }
+        this.gateway.preRun();
     }
 
     run() {
-
-        this.executor.run();
+        // console.log("Nexus run()")
+        for(var assimilator in this.assimilators) {
+            this.assimilators[assimilator].run();
+        }
+        this.gateway.run();
     }
 
     createRoomObjects() {
-        _.each(this.room.find(FIND_SOURCES), (source) => {
-            this.handleSource(source);
-        });
+        // debugger;
+        var sources = this.room.find(FIND_SOURCES);
+        for(var source in sources) {
+            this.handleSource(sources[source]);
+        }
         var storage = this.room.find(FIND_STRUCTURES, {
             filter: (s) => s.structureType === STRUCTURE_STORAGE
         });
-        if(storage) this.storage = storage;
+        if(storage.length>0) this.storage = storage[0];
         var extensions = this.room.find(FIND_STRUCTURES, {
             filter: (s) => s.structureType === STRUCTURE_EXTENSION
         });
@@ -62,25 +58,12 @@ class Nexus {
     }
 
     handleSource(source) {
-        this.miningSites = this.miningSites.concat(new Assimilator(this, source));
-    }
-
-    handleBootStrap() {
-        if(this.countUnitsByRole(Roles.probe) < 4) {
-            this.gateway.queueUnit(Roles.probe);
-        }
+        this.assimilators = this.assimilators.concat(new Assimilator(this, source));
     }
 
     countUnitsByRole(role) {
-        return this.gateway.getQueuedUnitsByRole(role);
-    }
-
-    get Executor() {
-        return this.executor;
-    }
-
-    get capacity() {
-
+        var count = _.sum(Game.creeps, (creep) => creep.memory.role == role);
+        return count + this.gateway.getQueuedUnitsByRole(role);
     }
 };
 

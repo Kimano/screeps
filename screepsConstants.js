@@ -40,6 +40,22 @@ const screepsConstants = {
         upgrading: "#00FFFF",
         hauling: "#00FF00",
         collecting: "#FFFF00"
+    },
+    role: {
+        zealot:     "zealot",     // Offensive oriented Melee Unit
+        dragoon:    "dragoon",    // Offensive oriented Ranged Unit
+        archon:     "archon",     // Defensive oriented Melee Unit
+        immortal:   "immortal",   // Defensive oriented Ranged Unit
+        reaver:     "reaver",     // Dismantler
+        scarab:     "scarab",     // Cannon fodder
+        templar:    "templar",    // Healer
+        warp_prism: "warp_prism", // Colonist/Claimer
+        scout:      "scout",      // Scout
+        mothership: "mothership", // Manager
+        void_ray:   "void_ray",   // Harvester
+        oracle:     "oracle",     // Upgrader
+        probe:      "probe",      // General purpose worker
+        shuttle:    "shuttle",    // hauler
     }
 }
 
