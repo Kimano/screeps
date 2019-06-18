@@ -3,8 +3,9 @@ const CONSTANTS = require('screepsConstants')
 class UnitSetup {
 
     constructor(role, capacity, opts) {
+        // debugger;
         this.opts = opts;
-        this.setup = this[role];
+        this.setup = UnitSetup[role];
         this.role = role;
         this.bodySetup = UnitSetup.buildBody(this.setup.body, capacity);
         this.name = UnitSetup.generateName(this.setup.name);
@@ -51,7 +52,7 @@ class UnitSetup {
         return body;
     }
 
-    [CONSTANTS.role.probe] = {
+    static [CONSTANTS.role.probe] = {
         name: "Probe",
         role: CONSTANTS.role.probe,
         body: {
@@ -59,7 +60,7 @@ class UnitSetup {
             additionalBodyParts: []
         }
     }
-    [CONSTANTS.role.void_ray] = {
+    static [CONSTANTS.role.void_ray] = {
         name: "Void Ray",
         role: CONSTANTS.role.void_ray,
         body: {
@@ -67,7 +68,7 @@ class UnitSetup {
             additionalBodyParts: [WORK]
         }
     }
-    [CONSTANTS.role.shuttle] = {
+    static [CONSTANTS.role.shuttle] = {
         name: "Shuttle",
         role: CONSTANTS.role.shuttle,
         body: {
