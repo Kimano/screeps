@@ -8,7 +8,7 @@ class UnitSetup {
         this.role = role;
         this.bodySetup = UnitSetup.buildBody(this.setup.body, capacity);
         this.name = UnitSetup.generateName(this.setup.name);
-        console.log("UnitSetup constructed: " + this.setup.name +" by: "+opts.owner);
+        // console.log("UnitSetup constructed: " + this.setup.name +" by: "+opts.owner);
     }
 
     getRole() {
@@ -51,7 +51,7 @@ class UnitSetup {
         return body;
     }
 
-    "probe" = {
+    [CONSTANTS.role.probe] = {
         name: "Probe",
         role: CONSTANTS.role.probe,
         body: {
@@ -59,7 +59,7 @@ class UnitSetup {
             additionalBodyParts: []
         }
     }
-    "void_ray" = {
+    [CONSTANTS.role.void_ray] = {
         name: "Void Ray",
         role: CONSTANTS.role.void_ray,
         body: {
@@ -67,7 +67,7 @@ class UnitSetup {
             additionalBodyParts: [WORK]
         }
     }
-    "shuttle" = {
+    [CONSTANTS.role.shuttle] = {
         name: "Shuttle",
         role: CONSTANTS.role.shuttle,
         body: {

@@ -2,6 +2,7 @@ const CONSTANTS = require('screepsConstants')
 const Executor = require('Executor');
 const Assimilator = require('Assimilator');
 const Gateway = require('Gateway');
+const Pylon = require('Pylon');
 
 class Nexus {
     constructor(id, room, outposts) {
@@ -46,15 +47,8 @@ class Nexus {
         for(var source in sources) {
             this.handleSource(sources[source]);
         }
-        var storage = this.room.find(FIND_STRUCTURES, {
-            filter: (s) => s.structureType === STRUCTURE_STORAGE
-        });
-        if(storage.length>0) this.storage = storage[0];
-        var extensions = this.room.find(FIND_STRUCTURES, {
-            filter: (s) => s.structureType === STRUCTURE_EXTENSION
-        });
-        if(extensions) this.extensions = extensions;
         this.gateway = new Gateway(this);
+        this.pylon = new Pylon(this);
     }
 
     handleSource(source) {

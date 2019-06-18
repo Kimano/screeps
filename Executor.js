@@ -12,6 +12,7 @@ class Executor {
     
     preRun() {
         // console.log("Executor preRun()")
+        // debugger;
         this.nexus.preRun();
         for(var purpose in this.purposes) {
             this.purposes[purpose].preRun();
@@ -27,7 +28,8 @@ class Executor {
     }
     
     registerPurpose(purpose) {
-        this.purposes.push(purpose);
+        if(!purpose) debugger;
+        if(purpose) this.purposes.push(purpose);
     }
     
     requestCreeps(role, num, opts) {
@@ -35,7 +37,7 @@ class Executor {
         // debugger;
         while(num-->0) {
             var unitSetup = new UnitSetup(role, capacity, opts);
-            console.log(opts.owner + " is requesting " + num + " " + role);
+            // console.log(opts.owner + " is requesting " + num + " " + role);
             this.nexus.gateway.queueUnitSetup(unitSetup);
         }
     }

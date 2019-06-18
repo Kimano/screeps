@@ -50,7 +50,7 @@ class Assimilator {
                     if (_.sum(miner.carry) < miner.carryCapacity) {
                         return creepUnit.goHarvest(this.source);
                     } else {
-                        return creepUnit.goTransfer(this.container);
+                        return creepUnit.goTransfer(this.container, RESOURCE_ENERGY, _.sum(miner.carry));
                     }
                 // }
             }
