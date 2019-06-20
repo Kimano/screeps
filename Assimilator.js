@@ -29,6 +29,10 @@ class Assimilator {
         this.container = _.first(this.pos.findInRange(FIND_STRUCTURES, 1, {
             filter: (s) => s.structureType === STRUCTURE_CONTAINER
         }));
+        if(!this.constructionSite && !this.container) {
+            var containerPos = _.first(this.nexus.buildablePositionsAtRange(this.source.pos, 1));
+            containerPos.createConstructionSite(STRUCTURE_CONTAINER);
+        }
     }
     
     preRun() {

@@ -17,6 +17,11 @@ class Conclave {
     }
 
     preRun() {
+        for(var i in Memory.creeps) {
+            if(!Game.creeps[i]) {
+                delete Memory.creeps[i];
+            }
+        }
         // console.log("Conclave preRun()")
         // debugger;
         for(var executor in this.executors) {

@@ -18,8 +18,8 @@ class UnitSetup {
 
     getMemory() {
         var memory = {};
-        var opts = this.opts;
-        if(opts && opts.owner) {
+        memory.role = this.role;
+        if(this.opts && this.opts.owner) {
             memory.owner = opts.owner;
         }
         return memory;

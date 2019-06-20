@@ -35,10 +35,6 @@ class Gateway {
         return this.room.energyCapacityAvailable;
     }
 
-    getQueuedUnitsByRole(role) {
-        return _.filter(this.purpose.spawnQueue, (setup) => setup.getRole() === role);
-    }
-
     getNextInQueue() {
         return this.purpose.getNextInQueue();
     }
