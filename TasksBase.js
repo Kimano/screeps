@@ -22,6 +22,10 @@ class TasksBase {
     static withdraw(target, resourceType, amount, options) {
         return new TaskWithdraw(target, resourceType, amount, options);
     }
+
+    static repair(target, options) {
+        return new TaskRepair(target, options);
+    }
 }
 
 module.exports = TasksBase;
